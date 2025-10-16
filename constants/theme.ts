@@ -7,7 +7,7 @@ export const Colors = {
   // Semantic Colors
   success: "#34C759",
   warning: "#FF9500",
-  error: "#FF3B30",
+  error: "#FF3B10",
   info: "#5AC8FA",
 
   // Text Colors
@@ -27,6 +27,7 @@ export const Colors = {
 
   // Border Colors
   border: {
+    primary: "#D1D5DB",
     light: "#E5E7EB",
     medium: "#D1D5DB",
     dark: "#9CA3AF",
@@ -70,6 +71,42 @@ export const Typography = {
     tight: 1.2,
     normal: 1.5,
     relaxed: 1.75,
+  },
+  // Text Styles
+  heading1: {
+    fontSize: 32,
+    fontWeight: "700" as const,
+    lineHeight: 40,
+  },
+  heading2: {
+    fontSize: 24,
+    fontWeight: "600" as const,
+    lineHeight: 32,
+  },
+  heading3: {
+    fontSize: 20,
+    fontWeight: "600" as const,
+    lineHeight: 28,
+  },
+  body: {
+    fontSize: 16,
+    fontWeight: "400" as const,
+    lineHeight: 24,
+  },
+  bodyBold: {
+    fontSize: 16,
+    fontWeight: "600" as const,
+    lineHeight: 24,
+  },
+  caption: {
+    fontSize: 12,
+    fontWeight: "400" as const,
+    lineHeight: 16,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600" as const,
+    lineHeight: 24,
   },
 } as const;
 

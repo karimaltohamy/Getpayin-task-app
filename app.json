@@ -4,6 +4,7 @@
     "slug": "GetPayIn-task-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "jsEngine": "hermes",
     "icon": "./assets/images/icon.png",
     "scheme": "getpayintaskapp",
     "userInterfaceStyle": "automatic",
@@ -45,6 +46,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "packagerOpts": {
+      "enableBabelRCLookup": false
+    },
+    "developmentClient": {
+      "silentLaunch": true
     }
   }
 }

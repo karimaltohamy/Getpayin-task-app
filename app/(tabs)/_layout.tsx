@@ -1,11 +1,34 @@
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
 
 const TabsLayout = () => {
   return (
-    <View>
-      <Text>TabsLayout</Text>
-    </View>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: "#c67c4e",
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tabs>
   );
 };
 

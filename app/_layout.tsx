@@ -1,3 +1,5 @@
+import { AuthGuard } from "@/components/AuthGuard";
+import { BiometricProvider } from "@/components/BiometricProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -24,19 +26,28 @@ export const queryClient = new QueryClient({
 
 export default function RootLayout() {
   useEffect(() => {
-    store.dispatch(restoreAuth());
+    const initializeApp = async () => {
+      // Restore auth state from storage on app launch
+      store.dispatch(restoreAuth());
+    };
+
+    initializeApp();
   }, []);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <StatusBar style="auto" />
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="auth/login/index" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
+          <AuthGuard>
+            <BiometricProvider>
+              <StatusBar style="auto" />
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="auth/login/index" />
+                <Stack.Screen name="(tabs)" />
+              </Stack>
+            </BiometricProvider>
+          </AuthGuard>
         </QueryClientProvider>
       </Provider>
     </GestureHandlerRootView>
