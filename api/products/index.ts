@@ -1,10 +1,18 @@
 import { apiEndpoints } from "@/constants/config";
 import axiosService from "../axiosService";
-import { Product, ProductsResponse } from "./types";
+import {
+  AllProductsOptions,
+  Category,
+  Product,
+  ProductsResponse,
+} from "./types";
 
 export const productsApi = {
-  getAllProducts: async () => {
-    const response = await axiosService.get(apiEndpoints.PRODUCTS);
+  getAllProducts: async ({ page = 1, limit = 30 }: AllProductsOptions = {}) => {
+    const skip = (page - 1) * limit;
+    const response = await axiosService.get(
+      `${apiEndpoints.PRODUCTS}?limit=${limit}&skip=${skip}`
+    );
     return response.data as ProductsResponse;
   },
 
@@ -22,6 +30,6 @@ export const productsApi = {
 
   getCategories: async () => {
     const response = await axiosService.get(apiEndpoints.CATEGORIES);
-    return response.data as string[];
+    return response.data as Category[];
   },
 };

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useCallback } from "react";
-import { AppState, PanResponder } from "react-native";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setLocked, updateLastActiveTime } from "@/store/biometricSlice";
 import { BIOMETRIC_LOCK_TIMEOUT } from "@/constants/config";
+import { setLocked, updateLastActiveTime } from "@/store/biometricSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useCallback, useEffect, useRef } from "react";
+import { PanResponder } from "react-native";
 
 export function useInactivity() {
   const dispatch = useAppDispatch();
@@ -15,22 +15,22 @@ export function useInactivity() {
   const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const resetInactivityTimer = useCallback(() => {
-    // Don't reset timer if biometric is disabled or user is not authenticated
+    // don't reset timer if biometric is disabled or user is not authenticated
     if (!isEnabled || !isAuthenticated) {
       return;
     }
 
-    // Clear existing timer
+    // clear existing timer
     if (inactivityTimerRef.current) {
       clearTimeout(inactivityTimerRef.current);
     }
 
-    // Update last active time in Redux
+    // update last active time in Redux
     if (!isLocked) {
       dispatch(updateLastActiveTime());
     }
 
-    // Set new timer
+    // set new timer
     inactivityTimerRef.current = setTimeout(() => {
       if (isEnabled && isAuthenticated && !isLocked) {
         dispatch(setLocked(true));
@@ -46,7 +46,7 @@ export function useInactivity() {
   }, []);
 
   useEffect(() => {
-    // Start inactivity timer when component mounts
+    // start inactivity timer when component mounts
     if (isEnabled && isAuthenticated && !isLocked) {
       resetInactivityTimer();
     }
@@ -54,9 +54,15 @@ export function useInactivity() {
     return () => {
       clearInactivityTimer();
     };
-  }, [isEnabled, isAuthenticated, isLocked, resetInactivityTimer, clearInactivityTimer]);
+  }, [
+    isEnabled,
+    isAuthenticated,
+    isLocked,
+    resetInactivityTimer,
+    clearInactivityTimer,
+  ]);
 
-  // Create pan responder to detect touch events
+  // create pan responder to detect touch events
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => {

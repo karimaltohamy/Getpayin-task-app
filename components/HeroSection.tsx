@@ -1,27 +1,28 @@
-import HeroSection from "@/components/HeroSection";
-import ProductSection from "@/components/products/ProductSection";
 import { BorderRadius, Colors, Spacing, Typography } from "@/constants/theme";
+import { useAppSelector } from "@/store/hooks";
 import React from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+const HeroSection = () => {
+  const user = useAppSelector((state) => state.auth.user);
+  const insets = useSafeAreaInsets();
+
   return (
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor="transparent"
-        barStyle="light-content"
-        translucent
-      />
-      <ProductSection HeroComponent={HeroSection} />
+    <View style={styles.heroSection}>
+      <View style={[styles.statusBarSpace, { height: insets.top + 30 }]} />
+      <View style={styles.welcomeContainer}>
+        <Text style={styles.welcomeText}>Hello, {user?.username}!</Text>
+        <Text style={styles.heroTitle}>Discover Amazing Products</Text>
+        <Text style={styles.heroSubtitle}>
+          Browse through our collection of quality items
+        </Text>
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background.secondary,
-  },
   heroSection: {
     backgroundColor: Colors.primary,
     paddingHorizontal: Spacing.lg,
@@ -53,3 +54,5 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
 });
+
+export default HeroSection;

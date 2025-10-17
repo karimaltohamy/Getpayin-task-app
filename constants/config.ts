@@ -20,4 +20,4 @@ export const StorageKeys = {
 };
 
 // biometric lock settings
-export const BIOMETRIC_LOCK_TIMEOUT = 30000; // 30 seconds of inactivity
+export const BIOMETRIC_LOCK_TIMEOUT = 60 * 60 * 1000; // 1 hour
