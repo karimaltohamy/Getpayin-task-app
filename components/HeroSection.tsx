@@ -10,7 +10,7 @@ const HeroSection = () => {
 
   return (
     <View style={styles.heroSection}>
-      <View style={[styles.statusBarSpace, { height: insets.top + 30 }]} />
+      <View style={[styles.statusBarSpace, { height: insets.top + 10 }]} />
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeText}>Hello, {user?.username}!</Text>
         <Text style={styles.heroTitle}>Discover Amazing Products</Text>

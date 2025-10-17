@@ -1,9 +1,36 @@
 import { BorderRadius, Colors, Shadows, Spacing } from "@/constants/theme";
+import { logout } from "@/store/authSlice";
+import { useAppDispatch } from "@/store/hooks";
 import { Ionicons } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
-import { Platform } from "react-native";
+import { Tabs, useRouter } from "expo-router";
+import { Alert, Platform } from "react-native";
 
 export default function TabsLayout() {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: () => {
+            dispatch(logout());
+            router.replace("/auth/login");
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <Tabs
       screenOptions={{
@@ -11,6 +38,8 @@ export default function TabsLayout() {
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.text.tertiary,
         tabBarStyle: {
+          position: "absolute",
+          bottom: Spacing.lg,
           backgroundColor: Colors.card,
           borderTopWidth: 0,
           borderRadius: BorderRadius.xl + Spacing.xl,
@@ -21,9 +50,6 @@ export default function TabsLayout() {
           borderWidth: 1,
           borderColor: Colors.border.light,
           elevation: 8,
-          width: "90%",
-          marginHorizontal: "auto",
-          marginBottom: Spacing.lg,
         },
         tabBarLabelStyle: {
           fontSize: 11,
@@ -78,6 +104,21 @@ export default function TabsLayout() {
               color={color}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="signout"
+        options={{
+          title: "Sign Out",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="log-out-outline" size={24} color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            handleSignOut();
+          },
         }}
       />
     </Tabs>

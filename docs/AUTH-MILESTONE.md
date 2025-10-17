@@ -7,6 +7,7 @@ This document outlines the implementation of the authentication system for the G
 ### 1. DummyJSON API Integration
 
 #### API Client Setup
+
 - **Location**: [api/axiosService.ts](../api/axiosService.ts)
 - **Features**:
   - Axios instance with base URL configuration
@@ -15,12 +16,14 @@ This document outlines the implementation of the authentication system for the G
   - 10-second timeout for all requests
 
 #### Authentication Endpoints
+
 - **Location**: [api/auth/index.ts](../api/auth/index.ts)
 - **Endpoints**:
   - `POST /auth/login` - User login with username/password
   - `GET /auth/me` - Validate token and get current user data
 
 #### Type Definitions
+
 - **Location**: [api/auth/types.ts](../api/auth/types.ts)
 - **Types**:
   - `User` - User profile data
@@ -31,6 +34,7 @@ This document outlines the implementation of the authentication system for the G
 ### 2. Token Storage with MMKV
 
 #### Storage Service
+
 - **Location**: [services/storage.ts](../services/storage.ts)
 - **Features**:
   - MMKV-based persistent storage with encryption
@@ -39,6 +43,7 @@ This document outlines the implementation of the authentication system for the G
   - Automatic JSON serialization/deserialization
 
 #### Storage Keys
+
 - **Location**: [constants/config.ts](../constants/config.ts)
 - **Keys**:
   - `auth.token` - JWT authentication token
@@ -48,7 +53,8 @@ This document outlines the implementation of the authentication system for the G
 ### 3. Login Screen
 
 #### Implementation
-- **Location**: [app/auth/login/index.tsx](../app/auth/login/index.tsx)
+
+- **Location**: [app/auth/login.tsx](../app/auth/login/index.tsx)
 - **Features**:
   - Username and password input fields
   - Client-side form validation using Yup
@@ -60,19 +66,23 @@ This document outlines the implementation of the authentication system for the G
   - Responsive design
 
 #### Form Validation
+
 - **Location**: [utils/validations/auth.ts](../utils/validations/auth.ts)
 - **Rules**:
   - Username: Required
   - Password: Required
 
 #### Test Credentials
+
 For testing purposes, use these DummyJSON credentials:
+
 - **Username**: `emilys`
 - **Password**: `emilyspass`
 
 ### 4. Redux Auth State Management
 
 #### Auth Slice
+
 - **Location**: [store/authSlice.ts](../store/authSlice.ts)
 - **Actions**:
   - `setCredentials({ user, token })` - Set user and token, persist to MMKV
@@ -82,6 +92,7 @@ For testing purposes, use these DummyJSON credentials:
   - `setLoading(boolean)` - Set loading state
 
 #### State Shape
+
 ```typescript
 {
   user: User | null;
@@ -94,6 +105,7 @@ For testing purposes, use these DummyJSON credentials:
 ### 5. Protected Routes & Auth Guard
 
 #### Auth Guard Component
+
 - **Location**: [components/AuthGuard.tsx](../components/AuthGuard.tsx)
 - **Features**:
   - Token validation on app launch
@@ -103,14 +115,17 @@ For testing purposes, use these DummyJSON credentials:
   - Automatic route redirection
 
 #### Protected Route Hook
+
 - **Location**: [hooks/useProtectedRoute.ts](../hooks/useProtectedRoute.ts)
 - **Usage**:
+
 ```typescript
 const { isAuthenticated, isLoading } = useProtectedRoute();
 ```
 
 #### Root Layout
-- **Location**: [app/_layout.tsx](../app/_layout.tsx)
+
+- **Location**: [app/\_layout.tsx](../app/_layout.tsx)
 - **Features**:
   - Redux store provider
   - React Query client provider
@@ -118,6 +133,7 @@ const { isAuthenticated, isLoading } = useProtectedRoute();
   - Stack navigation configuration
 
 #### Index Screen
+
 - **Location**: [app/index.tsx](../app/index.tsx)
 - **Features**:
   - Entry point for the app
@@ -127,7 +143,8 @@ const { isAuthenticated, isLoading } = useProtectedRoute();
 ### 6. User Interface
 
 #### Home Screen
-- **Location**: [app/(tabs)/index.tsx](../app/(tabs)/index.tsx)
+
+- **Location**: [app/(tabs)/index.tsx](<../app/(tabs)/index.tsx>)
 - **Features**:
   - Display user profile information
   - User avatar, name, email, and username
@@ -135,6 +152,7 @@ const { isAuthenticated, isLoading } = useProtectedRoute();
   - Clean, card-based UI design
 
 #### Theme System
+
 - **Location**: [constants/theme.ts](../constants/theme.ts)
 - **Updates**:
   - Added typography presets (heading1, body, bodyBold, caption, buttonText)
@@ -145,6 +163,7 @@ const { isAuthenticated, isLoading } = useProtectedRoute();
 ## Authentication Flow
 
 ### 1. App Launch
+
 ```
 App Start
    ↓
@@ -162,6 +181,7 @@ Unauthenticated → /auth/login
 ```
 
 ### 2. Login Flow
+
 ```
 User enters credentials
    ↓
@@ -181,6 +201,7 @@ Navigate to /(tabs)
 ```
 
 ### 3. Token Validation Flow
+
 ```
 App opens with existing token
    ↓
@@ -193,6 +214,7 @@ Continue to authenticated screens
 ```
 
 ### 4. Logout Flow
+
 ```
 User clicks Logout
    ↓
@@ -273,32 +295,38 @@ constants/
 ### Manual Testing Steps
 
 1. **First Launch (Unauthenticated)**
+
    - App should redirect to login screen
    - No user data should be present
 
 2. **Login with Valid Credentials**
+
    - Use: `emilys` / `emilyspass`
    - Should show loading indicator
    - Should navigate to home screen
    - Should display user information
 
 3. **Login with Invalid Credentials**
+
    - Enter wrong username/password
    - Should show error message
    - Should not navigate away
 
 4. **Form Validation**
+
    - Leave fields empty and submit
    - Should show validation errors
    - Errors should clear when typing
 
 5. **Session Persistence**
+
    - Login successfully
    - Close and reopen app
    - Should remain logged in
    - Should show home screen immediately
 
 6. **Logout**
+
    - Click logout button
    - Confirm in dialog
    - Should redirect to login
@@ -328,15 +356,19 @@ Potential enhancements for the authentication system:
 ### Common Issues
 
 **Issue**: MMKV crashes on web
+
 - **Solution**: The app uses fallback in-memory storage on web platforms
 
 **Issue**: Token validation fails on startup
+
 - **Solution**: Check internet connection and API availability
 
 **Issue**: User gets stuck on loading screen
-- **Solution**: Check Redux state initialization in _layout.tsx
+
+- **Solution**: Check Redux state initialization in \_layout.tsx
 
 **Issue**: Navigation doesn't work after login
+
 - **Solution**: Verify router.replace() calls in login screen and index.tsx
 
 ## Dependencies
@@ -351,6 +383,7 @@ Potential enhancements for the authentication system:
 ## Conclusion
 
 The authentication system is fully implemented with:
+
 - ✅ DummyJSON API integration
 - ✅ Secure token storage with MMKV
 - ✅ Login screen with validation
