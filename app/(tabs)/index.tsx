@@ -1,15 +1,10 @@
 import HeroSection from "@/components/HeroSection";
 import ProductSection from "@/components/products/ProductSection";
 import { BorderRadius, Colors, Spacing, Typography } from "@/constants/theme";
-import { useAppSelector } from "@/store/hooks";
 import React from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
-  const { user } = useAppSelector((state) => state.auth);
-
-  console.log("Logged in user:", user);
-
   return (
     <View style={styles.container}>
       <StatusBar

@@ -45,6 +45,10 @@ export const storageHelper = {
         return value;
       }
 
+      // For AsyncStorage fallback, use async helper instead
+      console.log(
+        `AsyncStorage: Cannot retrieve "${key}" synchronously, use asyncStorageHelper instead`
+      );
       return undefined;
     } catch (error) {
       console.error(`Error getting string from key "${key}":`, error);

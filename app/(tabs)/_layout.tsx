@@ -97,19 +97,7 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="categories"
-        options={{
-          title: "Explore",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "grid" : "grid-outline"}
-              size={24}
-              color={color}
-            />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="signout"
         options={{

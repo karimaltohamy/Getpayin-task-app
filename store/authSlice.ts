@@ -1,7 +1,11 @@
 import { AuthState, User } from "@/api/auth/types";
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StorageKeys } from "../constants/config";
-import { storageHelper, asyncStorageHelper, useAsyncStorage } from "../services/mmkvStorage";
+import {
+  asyncStorageHelper,
+  storageHelper,
+  useAsyncStorage,
+} from "../services/mmkvStorage";
 
 const initialState: AuthState = {
   user: null,
@@ -11,12 +15,12 @@ const initialState: AuthState = {
   isLoading: true,
 };
 
-// Async thunk to restore auth from storage
+// async thunk to restore auth from storage
 export const restoreAuthAsync = createAsyncThunk(
   "auth/restoreAsync",
   async () => {
     if (useAsyncStorage) {
-      // Use async storage helper when MMKV is not available
+      // use async storage helper when MMKV is not available
       const token = await asyncStorageHelper.getString(StorageKeys.AUTH_TOKEN);
       const refreshToken = await asyncStorageHelper.getString(
         StorageKeys.AUTH_REFRESH_TOKEN
@@ -26,7 +30,7 @@ export const restoreAuthAsync = createAsyncThunk(
       );
       return { token, refreshToken, user };
     } else {
-      // Use synchronous storage helper when MMKV is available
+      // use synchronous storage helper when MMKV is available
       const token = storageHelper.getString(StorageKeys.AUTH_TOKEN);
       const refreshToken = storageHelper.getString(
         StorageKeys.AUTH_REFRESH_TOKEN

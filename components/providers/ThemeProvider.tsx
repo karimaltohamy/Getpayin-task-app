@@ -8,16 +8,17 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const systemColorScheme = useColorScheme();
-  const { mode, updateActiveTheme } = useTheme();
+  const { mode, updateActiveTheme, activeTheme } = useTheme();
 
   useEffect(() => {
     // update active theme based on system color scheme
     if (mode === "system") {
-      updateActiveTheme(systemColorScheme === "dark" ? "dark" : "light");
+      const newTheme = systemColorScheme === "dark" ? "dark" : "light";
+      updateActiveTheme(newTheme);
     } else {
       updateActiveTheme(mode);
     }
-  }, [mode, systemColorScheme, updateActiveTheme]);
+  }, [mode, systemColorScheme, updateActiveTheme, activeTheme]);
 
   return <>{children}</>;
 }

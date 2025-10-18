@@ -1,6 +1,7 @@
 import { Colors } from "@/constants/theme";
 import { restoreAuthAsync } from "@/store/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { restoreThemeAsync } from "@/store/themeSlice";
 import { useRouter, useSegments } from "expo-router";
 import { useEffect, useRef } from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -17,8 +18,14 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   const hasInitialized = useRef(false);
 
+  // restore auth state
   useEffect(() => {
     dispatch(restoreAuthAsync());
+  }, []);
+
+  // restore theme state
+  useEffect(() => {
+    dispatch(restoreThemeAsync());
   }, []);
 
   // handle routing based on auth state
@@ -33,10 +40,10 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
     const inAuthGroup = segments[0] === "auth";
 
-    if (!isAuthenticated && !inAuthGroup) {
-      router.replace("/auth/login");
-    } else if (isAuthenticated && inAuthGroup) {
+    if (isAuthenticated && inAuthGroup) {
       router.replace("/(tabs)");
+    } else if (!isAuthenticated && !inAuthGroup) {
+      router.replace("/auth/login");
     }
   }, [isAuthenticated, isLoading, segments, router]);
 
