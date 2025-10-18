@@ -13,35 +13,9 @@ interface ThemeState {
   activeTheme: "light" | "dark";
 }
 
-// get initial theme from storage
-const getInitialTheme = (): ThemeMode => {
-  try {
-    const savedTheme = storageHelper.getString(StorageKeys.THEME_MODE);
-
-    if (
-      savedTheme === "light" ||
-      savedTheme === "dark" ||
-      savedTheme === "system"
-    ) {
-      return savedTheme;
-    }
-  } catch (error) {
-    console.error("Error loading theme from storage:", error);
-  }
-  return "system";
-};
-
-const getInitialActiveTheme = (mode: ThemeMode): "light" | "dark" => {
-  if (mode === "system") {
-    return "light";
-  }
-  return mode;
-};
-
-const initialMode = getInitialTheme();
 const initialState: ThemeState = {
-  mode: initialMode,
-  activeTheme: getInitialActiveTheme(initialMode),
+  mode: "light",
+  activeTheme: "light",
 };
 
 // async thunk to restore theme from storage
