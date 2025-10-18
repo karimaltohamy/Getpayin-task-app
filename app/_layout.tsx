@@ -1,6 +1,7 @@
 import { AuthGuard } from "@/components/AuthGuard";
-import { BiometricProvider } from "@/components/BiometricProvider";
 import { OfflineIndicator } from "@/components/OfflineIndicator";
+import { BiometricProvider } from "@/components/providers/BiometricProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { queryClient } from "@/services/queryClient";
 import { createMMKVPersister } from "@/services/queryPersister";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
@@ -29,27 +30,29 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Provider store={store}>
-        <PersistQueryClientProvider
-          client={queryClient}
-          persistOptions={{
-            persister,
-            maxAge: 24 * 60 * 60 * 1000, // 24 hours
-          }}
-        >
-          <AuthGuard>
-            <BiometricProvider>
-              <View style={{ flex: 1 }}>
-                <OfflineIndicator />
-                <StatusBar style="auto" />
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="index" />
-                  <Stack.Screen name="auth/login" />
-                  <Stack.Screen name="(tabs)" />
-                </Stack>
-              </View>
-            </BiometricProvider>
-          </AuthGuard>
-        </PersistQueryClientProvider>
+        <ThemeProvider>
+          <PersistQueryClientProvider
+            client={queryClient}
+            persistOptions={{
+              persister,
+              maxAge: 24 * 60 * 60 * 1000, // 24 hours
+            }}
+          >
+            <AuthGuard>
+              <BiometricProvider>
+                <View style={{ flex: 1 }}>
+                  <OfflineIndicator />
+                  <StatusBar style="auto" />
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="index" />
+                    <Stack.Screen name="auth/login" />
+                    <Stack.Screen name="(tabs)" />
+                  </Stack>
+                </View>
+              </BiometricProvider>
+            </AuthGuard>
+          </PersistQueryClientProvider>
+        </ThemeProvider>
       </Provider>
     </GestureHandlerRootView>
   );

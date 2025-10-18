@@ -17,6 +17,7 @@ export const StorageKeys = {
   AUTH_USER: "auth.user",
   REACT_QUERY_CACHE: "react-query-cache",
   BIOMETRIC_ENABLED: "biometric.enabled",
+  THEME_MODE: "app_theme_mode",
 };
 
 // biometric lock settings

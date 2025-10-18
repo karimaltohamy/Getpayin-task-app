@@ -1,5 +1,5 @@
-import { StyleSheet } from 'react-native';
-import { Colors, Spacing, Typography, BorderRadius, Shadows } from './theme';
+import { StyleSheet } from "react-native";
+import { BorderRadius, Colors, Shadows, Spacing, Typography } from "./theme";
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -15,19 +15,19 @@ export const globalStyles = StyleSheet.create({
 
   centerContent: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   rowBetween: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
   shadow: {
@@ -60,9 +60,9 @@ export const globalStyles = StyleSheet.create({
     height: 50,
     backgroundColor: Colors.primary,
     borderRadius: BorderRadius.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
   },
 
   buttonText: {

@@ -1,5 +1,5 @@
-// Color Palette
-export const Colors = {
+// Color Palette - Light Theme
+export const LightColors = {
   primary: "#007AFF",
   primaryDark: "#0051D5",
   secondary: "#5856D6",
@@ -39,6 +39,51 @@ export const Colors = {
   overlay: "rgba(0, 0, 0, 0.5)",
   disabled: "#D1D5DB",
 } as const;
+
+// Color Palette - Dark Theme
+export const DarkColors = {
+  primary: "#0A84FF",
+  primaryDark: "#0969DA",
+  secondary: "#5E5CE6",
+
+  // Semantic Colors
+  success: "#30D158",
+  warning: "#FF9F0A",
+  error: "#FF453A",
+  info: "#64D2FF",
+
+  // Text Colors
+  text: {
+    primary: "#FFFFFF",
+    secondary: "#98989D",
+    tertiary: "#636366",
+    inverse: "#000000",
+  },
+
+  // Background Colors
+  background: {
+    primary: "#010101",
+    secondary: "#0A0A0A",
+    tertiary: "#1C1C1E",
+  },
+
+  // Border Colors
+  border: {
+    primary: "#38383A",
+    light: "#2C2C2E",
+    medium: "#38383A",
+    dark: "#48484A",
+  },
+
+  // UI Elements
+  card: "rgba(25, 25, 25, 0.52)",
+  shadow: "#000000",
+  overlay: "rgba(0, 0, 0, 0.52)",
+  disabled: "#48484A",
+} as const;
+
+// Default export for backward compatibility (Light theme)
+export const Colors = LightColors;
 
 // Spacing
 export const Spacing = {

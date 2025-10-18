@@ -1,4 +1,5 @@
-import { BorderRadius, Colors, Shadows, Spacing } from "@/constants/theme";
+import { BorderRadius, Shadows, Spacing } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
 import { logout } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,6 +9,7 @@ import { Alert, Platform } from "react-native";
 export default function TabsLayout() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const { colors } = useTheme();
 
   const handleSignOut = () => {
     Alert.alert(
@@ -35,12 +37,14 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.text.tertiary,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.text.tertiary,
         tabBarStyle: {
           position: "absolute",
+          // width: "95%",
+          alignSelf: "center",
           bottom: Spacing.lg,
-          backgroundColor: Colors.card,
+          backgroundColor: colors.background.primary,
           borderTopWidth: 0,
           borderRadius: BorderRadius.xl + Spacing.xl,
           paddingTop: Spacing.sm,
@@ -48,7 +52,7 @@ export default function TabsLayout() {
           paddingHorizontal: Spacing.sm,
           ...Shadows.lg,
           borderWidth: 1,
-          borderColor: Colors.border.light,
+          borderColor: colors.border.light,
           elevation: 8,
         },
         tabBarLabelStyle: {

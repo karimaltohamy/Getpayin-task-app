@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "./appSlice";
 import authReducer from "./authSlice";
 import biometricReducer from "./biometricSlice";
+import themeReducer from "./themeSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     app: appReducer,
     biometric: biometricReducer,
+    theme: themeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

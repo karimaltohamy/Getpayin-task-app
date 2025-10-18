@@ -1,5 +1,6 @@
 import type { Product } from "@/api/products/types";
-import { Colors, Spacing, Typography } from "@/constants/theme";
+import { Spacing, Typography } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
@@ -7,11 +8,12 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import DeleteConfirmDialog from "../dialogs/DeleteConfirmDialog";
+import { Text } from "../shared/ThemedText";
+import { View as ThemedView } from "../shared/ThemedView";
 import ProductCard from "./ProductCard";
 import { ProductSkeletonList } from "./ProductSkeleton";
 
@@ -46,6 +48,9 @@ export default function ProductList({
   isFetchingMore,
   ListHeaderComponent,
 }: ProductListProps) {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
+
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null
@@ -107,8 +112,8 @@ export default function ProductList({
             <RefreshControl
               refreshing={isRefreshing}
               onRefresh={onRefresh}
-              tintColor={Colors.primary}
-              colors={[Colors.primary]}
+              tintColor={colors.primary}
+              colors={[colors.primary]}
             />
           ) : undefined
         }
@@ -121,7 +126,7 @@ export default function ProductList({
         ListFooterComponent={
           isFetchingMore ? (
             <View style={{ paddingVertical: 16 }}>
-              <ActivityIndicator color={Colors.primary} />
+              <ActivityIndicator color={colors.primary} />
             </View>
           ) : undefined
         }
@@ -132,14 +137,14 @@ export default function ProductList({
 
           if (error) {
             return (
-              <View style={styles.centerContainer}>
+              <ThemedView variant="secondary" style={styles.centerContainer}>
                 <Ionicons
                   name="alert-circle-outline"
                   size={64}
-                  color={Colors.error}
+                  color={colors.error}
                 />
                 <Text style={styles.errorTitle}>Failed to load</Text>
-                <Text style={styles.errorMessage}>
+                <Text variant="secondary" style={styles.errorMessage}>
                   {error.message || "Something went wrong"}
                 </Text>
                 {onRetry && (
@@ -148,19 +153,23 @@ export default function ProductList({
                     onPress={onRetry}
                   >
                     <Ionicons name="refresh" size={18} color="#fff" />
-                    <Text style={styles.retryButtonText}>Retry</Text>
+                    <Text variant="inverse" style={styles.retryButtonText}>
+                      Retry
+                    </Text>
                   </TouchableOpacity>
                 )}
-              </View>
+              </ThemedView>
             );
           }
 
           return (
-            <View style={styles.centerContainer}>
-              <Ionicons name="cube-outline" size={64} color={Colors.disabled} />
+            <ThemedView variant="secondary" style={styles.centerContainer}>
+              <Ionicons name="cube-outline" size={64} color={colors.disabled} />
               <Text style={styles.emptyTitle}>No Products</Text>
-              <Text style={styles.emptyMessage}>{emptyMessage}</Text>
-            </View>
+              <Text variant="secondary" style={styles.emptyMessage}>
+                {emptyMessage}
+              </Text>
+            </ThemedView>
           );
         }}
       />
@@ -177,58 +186,54 @@ export default function ProductList({
   );
 }
 
-const styles = StyleSheet.create({
-  listContent: {
-    paddingHorizontal: Spacing.lg,
-    paddingBottom: 100, // Space for floating tab bar
-  },
-  headerWrapper: {
-    marginHorizontal: -Spacing.lg,
-  },
-  columnWrapper: {
-    justifyContent: "space-between",
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: Spacing.xl,
-  },
-  errorTitle: {
-    ...Typography.heading2,
-    color: Colors.text.primary,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-  },
-  errorMessage: {
-    ...Typography.body,
-    color: Colors.text.secondary,
-    textAlign: "center",
-    marginBottom: Spacing.xl,
-  },
-  retryButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: Spacing.sm,
-    backgroundColor: Colors.primary,
-    paddingHorizontal: Spacing.xl,
-    paddingVertical: Spacing.md,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    ...Typography.body,
-    color: "#FFFFFF",
-    fontWeight: "600",
-  },
-  emptyTitle: {
-    ...Typography.heading2,
-    color: Colors.text.primary,
-    marginTop: Spacing.md,
-    marginBottom: Spacing.sm,
-  },
-  emptyMessage: {
-    ...Typography.body,
-    color: Colors.text.secondary,
-    textAlign: "center",
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    listContent: {
+      paddingHorizontal: Spacing.lg,
+      paddingBottom: 100, // Space for floating tab bar
+    },
+    headerWrapper: {
+      marginHorizontal: -Spacing.lg,
+    },
+    columnWrapper: {
+      justifyContent: "space-between",
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: Spacing.xl,
+    },
+    errorTitle: {
+      ...Typography.heading2,
+      marginTop: Spacing.md,
+      marginBottom: Spacing.sm,
+    },
+    errorMessage: {
+      ...Typography.body,
+      textAlign: "center",
+      marginBottom: Spacing.xl,
+    },
+    retryButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: Spacing.sm,
+      backgroundColor: colors.primary,
+      paddingHorizontal: Spacing.xl,
+      paddingVertical: Spacing.md,
+      borderRadius: 8,
+    },
+    retryButtonText: {
+      ...Typography.body,
+      fontWeight: "600",
+    },
+    emptyTitle: {
+      ...Typography.heading2,
+      marginTop: Spacing.md,
+      marginBottom: Spacing.sm,
+    },
+    emptyMessage: {
+      ...Typography.body,
+      textAlign: "center",
+    },
+  });
