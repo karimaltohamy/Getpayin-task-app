@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Dimensions } from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+import { BorderRadius, Spacing } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
+import React, { useEffect, useRef } from "react";
+import { Animated, Dimensions, StyleSheet, View } from "react-native";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const CARD_WIDTH = (width - Spacing.lg * 3) / 2;
 
 export default function ProductSkeleton() {
   const shimmerAnimation = useRef(new Animated.Value(0)).current;
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
 
   useEffect(() => {
     Animated.loop(
@@ -47,81 +50,93 @@ export default function ProductSkeleton() {
 }
 
 export function ProductSkeletonList() {
+  const { colors } = useTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.listContainer}>
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
-      <ProductSkeleton />
+      <View style={styles.row}>
+        <ProductSkeleton />
+        <ProductSkeleton />
+      </View>
+      <View style={styles.row}>
+        <ProductSkeleton />
+        <ProductSkeleton />
+      </View>
+      <View style={styles.row}>
+        <ProductSkeleton />
+        <ProductSkeleton />
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    width: CARD_WIDTH,
-    backgroundColor: Colors.card,
-    borderRadius: BorderRadius.md,
-    marginBottom: Spacing.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    overflow: 'hidden',
-  },
-  image: {
-    width: '100%',
-    height: CARD_WIDTH * 0.8,
-    backgroundColor: Colors.border.light,
-  },
-  content: {
-    padding: Spacing.sm,
-  },
-  category: {
-    height: 12,
-    width: '40%',
-    backgroundColor: Colors.border.light,
-    borderRadius: BorderRadius.sm,
-    marginBottom: Spacing.xs,
-  },
-  title: {
-    height: 16,
-    width: '100%',
-    backgroundColor: Colors.border.light,
-    borderRadius: BorderRadius.sm,
-    marginBottom: Spacing.xs,
-  },
-  titleSecondLine: {
-    height: 16,
-    width: '70%',
-    backgroundColor: Colors.border.light,
-    borderRadius: BorderRadius.sm,
-    marginBottom: Spacing.sm,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  price: {
-    height: 20,
-    width: 60,
-    backgroundColor: Colors.border.light,
-    borderRadius: BorderRadius.sm,
-  },
-  rating: {
-    height: 14,
-    width: 40,
-    backgroundColor: Colors.border.light,
-    borderRadius: BorderRadius.sm,
-  },
-  listContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: Spacing.lg,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      width: CARD_WIDTH,
+      backgroundColor: colors.card,
+      borderRadius: BorderRadius.md,
+      marginBottom: Spacing.md,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+      overflow: "hidden",
+    },
+    image: {
+      width: "100%",
+      height: CARD_WIDTH * 0.8,
+      backgroundColor: colors.border.light,
+    },
+    content: {
+      padding: Spacing.sm,
+    },
+    category: {
+      height: 12,
+      width: "40%",
+      backgroundColor: colors.border.light,
+      borderRadius: BorderRadius.sm,
+      marginBottom: Spacing.xs,
+    },
+    title: {
+      height: 16,
+      width: "100%",
+      backgroundColor: colors.border.light,
+      borderRadius: BorderRadius.sm,
+      marginBottom: Spacing.xs,
+    },
+    titleSecondLine: {
+      height: 16,
+      width: "70%",
+      backgroundColor: colors.border.light,
+      borderRadius: BorderRadius.sm,
+      marginBottom: Spacing.sm,
+    },
+    footer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    price: {
+      height: 20,
+      width: 60,
+      backgroundColor: colors.border.light,
+      borderRadius: BorderRadius.sm,
+    },
+    rating: {
+      height: 14,
+      width: 40,
+      backgroundColor: colors.border.light,
+      borderRadius: BorderRadius.sm,
+    },
+    listContainer: {
+      paddingHorizontal: Spacing.lg,
+      paddingBottom: 100, // Space for floating tab bar
+    },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: Spacing.md,
+    },
+  });
