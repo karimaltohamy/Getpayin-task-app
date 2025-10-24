@@ -3,7 +3,7 @@ import { useBiometric } from "@/hooks/useBiometric";
 import { useAppSelector } from "@/store/hooks";
 import { MaterialIcons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -17,9 +17,7 @@ import {
 const { width, height } = Dimensions.get("window");
 
 export function BiometricLockScreen() {
-  const { isLocked, requiresUnlock } = useAppSelector(
-    (state) => state.biometric
-  );
+  const { isLocked } = useAppSelector((state) => state.biometric);
   const { authenticate, isAuthenticating, getBiometricTypeName } =
     useBiometric();
   const [biometricType, setBiometricType] = useState<string>("Biometric");
@@ -28,24 +26,22 @@ export function BiometricLockScreen() {
   useEffect(() => {
     // get biometric type name
     getBiometricTypeName().then(setBiometricType);
+  }, [getBiometricTypeName]);
 
-    // auto-trigger authentication when lock screen appears
-    if ((isLocked || requiresUnlock) && !isAuthenticating) {
-      handleAuthenticate();
-    }
-  }, [isLocked, requiresUnlock]);
-
-  const handleAuthenticate = async () => {
+  const handleAuthenticate = useCallback(async () => {
     setError("");
     const result = await authenticate({
       promptMessage: `Use ${biometricType} to unlock`,
       cancelLabel: "Cancel",
     });
 
+    console.log("Authentication result:", result);
+
     if (!result.success) {
       setError(result.error || "Authentication failed");
     }
-  };
+    // On success, authenticate() dispatches setUnlocked() which sets isLocked to false
+  }, [authenticate, biometricType]);
 
   const getBiometricIcon = () => {
     if (biometricType === "Face ID") {
@@ -56,7 +52,7 @@ export function BiometricLockScreen() {
     return "lock";
   };
 
-  if (!isLocked && !requiresUnlock) {
+  if (!isLocked) {
     return null;
   }
 
